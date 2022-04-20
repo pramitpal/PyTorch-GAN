@@ -84,10 +84,10 @@ optimizer_D = torch.optim.Adam(discriminator.parameters(), lr=opt.lr, betas=(opt
 Tensor = torch.cuda.FloatTensor if cuda else torch.Tensor
 
 dataloader = DataLoader(
-    ImageDataset("../../data/%s" % opt.dataset_name, hr_shape=hr_shape),
+    ImageDataset("./data/%s" % opt.dataset_name, hr_shape=hr_shape),
     batch_size=opt.batch_size,
     shuffle=True,
-    num_workers=opt.n_cpu,
+    num_workers=2,
 )
 
 # ----------
@@ -149,7 +149,7 @@ for epoch in range(opt.epoch, opt.n_epochs):
         # --------------
 
         sys.stdout.write(
-            "[Epoch %d/%d] [Batch %d/%d] [D loss: %f] [G loss: %f]"
+            "/n[Epoch %d/%d] [Batch %d/%d] [D loss: %f] [G loss: %f]"
             % (epoch, opt.n_epochs, i, len(dataloader), loss_D.item(), loss_G.item())
         )
 
