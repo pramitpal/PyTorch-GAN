@@ -19,8 +19,8 @@ class ImageDataset(Dataset):
         # Transforms for low resolution images and high resolution images
         self.lr_transform = transforms.Compose(
             [
-                 transforms.Resize((hr_height // 8, hr_height // 8), Image.BICUBIC),
-                transforms.Resize((hr_height // 4, hr_height // 4), Image.BICUBIC),
+                #transforms.Resize((hr_height // 8, hr_height // 8), Image.BICUBIC),
+                #transforms.Resize((hr_height // 4, hr_height // 4), Image.BICUBIC),
                 transforms.ToTensor(),
                 transforms.Normalize(mean, std),
             ]
@@ -37,7 +37,13 @@ class ImageDataset(Dataset):
 
     def __getitem__(self, index):
         img = Image.open(self.files[index % len(self.files)])
-        img_lr = self.lr_transform(img)
+         #############
+        lr_address=hr_address.replace('color','SPI')
+        lr_address=lr_address.replace('_c','_SPI')
+        lr_img = cv2.imread(lr_address)
+        lr_image=np.moveaxis(lr_img,2,0)
+        ############
+        img_lr = self.lr_transform(lr_img)
         img_hr = self.hr_transform(img)
 
         return {"lr": img_lr, "hr": img_hr}
